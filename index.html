@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Долголетие 21+21</title>
+<style>
+:root{--bg:#000;--fg:#fff;--acc:#37FF08;--mut:#8a8a8a;--line:#222;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg);font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%}
+body{padding:0 16px 40px;max-width:720px;margin:0 auto}
+a{color:var(--acc)}
+header{padding:28px 0 18px;border-bottom:2px solid var(--acc)}
+h1{font-size:44px;line-height:.95;letter-spacing:-1px;text-transform:uppercase}
+h1 span{color:var(--acc)}
+.sub{margin-top:12px;color:var(--mut);font-size:15px;line-height:1.4}
+.switch{display:flex;margin:20px 0 12px;border:2px solid var(--fg)}
+.switch button{flex:1;padding:14px 0;background:none;border:0;color:var(--fg);font:700 16px Arial;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+.switch button.on{background:var(--fg);color:var(--bg)}
+.switch button.on.bad{background:var(--acc)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--fg);font:14px Arial;cursor:pointer}
+.chip.on{border-color:var(--acc);color:var(--acc)}
+.dice{width:100%;margin:14px 0 6px;padding:14px;background:var(--acc);color:#000;border:0;font:700 16px Arial;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+.pick{display:none;margin:8px 0 4px;padding:14px;border:2px dashed var(--acc);font-size:16px;line-height:1.4}
+.pick b{color:var(--acc)}
+.list{margin-top:14px}
+.card{border-bottom:1px solid var(--line)}
+.card summary{list-style:none;display:flex;gap:14px;align-items:flex-start;padding:16px 0;cursor:pointer}
+.card summary::-webkit-details-marker{display:none}
+.num{flex:none;width:44px;font:700 28px Arial;color:var(--acc);line-height:1}
+.ttl{flex:1;font-size:17px;font-weight:700;line-height:1.3}
+.tags{display:block;margin-top:6px;font-weight:400;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.plus{flex:none;font-size:24px;line-height:1;color:var(--fg);transition:transform .2s}
+.card[open] .plus{transform:rotate(45deg);color:var(--acc)}
+.body{padding:0 0 18px 58px;font-size:15px;line-height:1.5}
+.body p{margin-bottom:10px}
+.body .lab{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--acc);margin-bottom:2px}
+.src{font-size:13px;color:var(--mut)}
+.bad-mode .num{color:var(--fg)}
+.bad-mode .card[open] .plus{color:var(--fg)}
+section.block{margin-top:36px}
+h2{font-size:24px;text-transform:uppercase;border-left:6px solid var(--acc);padding-left:10px;margin-bottom:14px}
+.day{border:1px solid var(--line)}
+.day div{display:flex;gap:12px;padding:12px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.4}
+.day div:last-child{border-bottom:0}
+.day b{flex:none;width:92px;color:var(--acc)}
+.day em{display:block;font-style:normal;color:var(--mut);font-size:13px;margin-top:4px}
+.note{margin-top:12px;color:var(--mut);font-size:14px;line-height:1.5}
+details.srcs summary{cursor:pointer;font-weight:700;padding:10px 0;color:var(--acc)}
+details.srcs ol{padding-left:22px;font-size:13px;line-height:1.6}
+footer{margin-top:44px;padding-top:16px;border-top:2px solid var(--acc);font:700 22px Arial;letter-spacing:4px}
+</style>
+</head>
+<body>
+<header>
+<h1>Долго<span>летие</span><br>21 + 21</h1>
+<p class="sub">Маленькие якоря без оборудования. Только то, что подтверждено крупными исследованиями. Сделала — плюс. Не сделала — окей.</p>
+</header>
+
+<div class="switch">
+<button id="bDo" class="on">Делать</button>
+<button id="bDont">Не делать</button>
+</div>
+
+<div class="chips" id="chips">
+<button class="chip on" data-f="Все">Все</button>
+<button class="chip" data-f="Красота">Красота</button>
+<button class="chip" data-f="Функциональность">Функциональность</button>
+<button class="chip" data-f="Ощущения">Ощущения</button>
+</div>
+
+<button class="dice" id="dice">Якорь на сегодня</button>
+<div class="pick" id="pick"></div>
+
+<div class="list" id="list"></div>
+
+<section class="block">
+<h2>День целиком</h2>
+<div class="day">
+<div><b>Утро</b><span>SPF на лицо и руки, цапля у раковины, каша из цельного зерна с оливковым маслом или орехами<em>~5 минут</em></span></div>
+<div><b>Дорога</b><span>быстрый шаг, взлететь по лестнице, шумоподавление вместо громкости<em>~0 минут сверху</em></span></div>
+<div><b>Учёба / работа</b><span>встать каждые 30–60 минут, пройтись после обеда, живой разговор<em>~10 минут</em></span></div>
+<div><b>Вечер</b><span>сесть и встать с пола, отбой под время подъёма<em>~2 минуты</em></span></div>
+<div><b>Выходные</b><span>природа, встреча со своей компанией, подъём в обычное окно<em>1–2 часа</em></span></div>
+</div>
+<p class="note">В день хватает 3–5 якорей. Исследования мерили привычки годами, а не идеальными неделями.</p>
+</section>
+
+<section class="block">
+<h2>Источники</h2>
+<details class="srcs"><summary>Открыть список</summary><ol id="srcList"></ol></details>
+</section>
+
+<footer>ROTAZ</footer>
+
+<script>
+const DO=[
+{t:"Крем с SPF на лицо, шею и тыльную сторону рук",g:["Красота"],a:"Утром после умывания, 30 секунд. Руки — обязательно: остаток крема с ладоней на тыльную сторону.",w:"Рандомизированное испытание, 903 человека до 55 лет: при ежедневном креме старение кожи за 4,5 года было на 24% меньше, чем у тех, кто мазался когда вспомнит. Кожу оценивали и на кистях — именно руки чаще всего выдают возраст.",k:"Гладкая кожа и запах крема — сенсорная отметка «день начался».",s:[["Hughes et al., Annals of Internal Medicine, 2013","https://doi.org/10.7326/0003-4819-158-11-201306040-00002"]]},
+{t:"Минутные «взрывы» по ходу дня",g:["Функциональность"],a:"3 раза в день по 1–2 минуты в полную силу: взлететь по лестнице, бодро догнать транспорт, быстрый шаг с рюкзаком.",w:"Люди без тренировок (UK Biobank, данные трекеров): 3 таких эпизода в день — риск смерти ниже на 38–40%, от сердечно-сосудистых причин — на 48–49%.",k:"Сердце колотится, щёки горят, через минуту — прилив бодрости.",s:[["Stamatakis et al., Nature Medicine, 2022","https://www.ukbiobank.ac.uk/publications/association-of-wearable-device-measured-vigorous-intermittent-lifestyle-physical-activity-with-mortality/"]]},
+{t:"Цапля, пока чистишь зубы",g:["Функциональность"],a:"Минута щётки на левой ноге, минута на правой. Усложнение — закрыть глаза.",w:"Cochrane, 108 рандомизированных испытаний: упражнения на баланс снижают число падений на 24%. У людей 51–75 лет, не простоявших 10 секунд на одной ноге, риск смерти был на 84% выше. Баланс держится примерно до 50, потом падает быстро — его выгодно накопить заранее.",k:"Игра «не упади» и мышцы стопы, о которых ты не знала.",s:[["Sherrington et al., Cochrane, 2019","https://www.mcmasteroptimalaging.org/full-article/03fc9edbc86b7e3b60b99128a3ca398d"],["Araujo et al., BJSM, 2022","https://bjsm.bmj.com/lookup/doi/10.1136/bjsports-2021-105360"]]},
+{t:"Сесть на пол и встать без рук",g:["Функциональность"],a:"Когда садишься смотреть видео или звонить — опуститься на пол по-турецки без опоры и так же встать.",w:"Тест меряет силу, гибкость и баланс разом (0–10 баллов). 4282 человека 46–75 лет: худший балл — риск смерти от естественных причин в 3,8 раза выше, от сердечно-сосудистых — в 6 раз. Каждый балл — минус 21% смертности.",k:"Детское «я так могу» и разогретые бёдра.",s:[["Araujo et al., European Journal of Preventive Cardiology, 2025","https://www.tctmd.com/news/simple-sitting-rising-test-linked-natural-and-cv-mortality"],["ESC, 2012","https://escardio.org/The-ESC/Press-Office/Press-releases/Ability-to-sit-and-rise-from-the-floor-is-closely-correlated-with-all-cause-mort"]]},
+{t:"2–5 минут ходьбы после еды",g:["Функциональность"],a:"Поела — пройтись по коридору, до остановки, помыть посуду стоя.",w:"Метаанализ: лёгкая ходьба после еды снижала глюкозу в среднем на 17% по сравнению с сидением, стояние — на 9,5%. Пик сахара — через 60–90 минут после еды.",k:"Нет «сонной ямы» после обеда.",s:[["Buffey et al., Sports Medicine, 2022","https://www.ksl.com/article/news/utah/health/just-2-minutes-of-walking-after-eating-can-help-blood-sugar-study-says/50468671"]]},
+{t:"Свои 8–10 тысяч шагов",g:["Функциональность"],a:"Часть пути пешком под плейлист, который включаешь только на ходу.",w:"Метаанализ 15 когорт: у людей младше 60 риск смерти снижается с ростом шагов примерно до 8–10 тысяч в день, дальше плато.",k:"Любимый подкаст как награда за движение.",s:[["Paluch et al., Lancet Public Health, 2022","https://openaccess.sgul.ac.uk/id/eprint/114197"]]},
+{t:"30–60 минут силовых в неделю",g:["Функциональность","Красота"],a:"2–3 короткие силовые в неделю. Без зала — приседания, пока закипает чайник, отжимания от стола.",w:"Метаанализ 16 когорт: силовые — риск смерти, болезней сердца, рака и диабета ниже на 10–17%; максимум пользы около 30–60 минут в неделю. Силовые + кардио — риск смерти ниже примерно на 40%.",k:"Собранное тело и ощущение себя в одежде.",s:[["Momma et al., BJSM, 2022","https://bjsm.bmj.com/content/56/13/755.abstract"]]},
+{t:"Вставать каждые 30–60 минут сидения",g:["Функциональность"],a:"На перерыве не сидеть в телефоне — дойти до кулера, подняться на этаж, потянуться.",w:"Метаанализ на миллион человек: вред долгого сидения полностью исчезал только у самых активных (60–75 минут умеренной активности в день). Остальным помогает дробить сидение.",k:"Хруст спины и кровь, вернувшаяся в ноги.",s:[["Ekelund et al., Lancet, 2016","https://publications.mrc-epid.cam.ac.uk/publication/1100"]]},
+{t:"Подъём в одно и то же время ±1 час",g:["Ощущения"],a:"Даже в выходные вставать в привычное окно; недосып добирать ранним отбоем.",w:"60 977 человек с трекерами: у самых регулярных риск смерти на 20–48% ниже, чем у самых хаотичных. Регулярность предсказывала смертность сильнее, чем длительность сна.",k:"Утро без «ваты», тело само знает, когда вставать.",s:[["Windred et al., Sleep, 2024","https://www.ukbiobank.ac.uk/publications/sleep-regularity-is-a-stronger-predictor-of-mortality-risk-than-sleep-duration-a-prospective-cohort-study/"]]},
+{t:"120 минут природы в неделю",g:["Ощущения"],a:"Парк, лес, набережная — 4 раза по 30 минут или один длинный выход.",w:"Почти 20 тысяч человек: от 120 минут в неделю шансы на хорошее здоровье выше на 59%, на высокое благополучие — на 23%. Меньше 60 минут от нуля не отличалось; дробить можно.",k:"Запах листьев или снега и цвета, которых нет в экране.",s:[["White et al., Scientific Reports, 2019","https://doi.org/10.1038/s41598-019-44097-3"]]},
+{t:"Один живой разговор в день",g:["Ощущения"],a:"10+ минут лицом к лицу или голосом, не текстом. Один на один тоже считается.",w:"Метаанализ 148 исследований (308 849 человек): при крепких связях вероятность выжить за время наблюдения на 50% выше — на уровне классических факторов риска.",k:"Тёплое «меня поняли» сразу после.",s:[["Holt-Lunstad et al., PLoS Medicine, 2010","https://doi.org/10.1371/journal.pmed.1000316"]]},
+{t:"Ходить быстрым шагом",g:["Функциональность"],a:"Обычную ходьбу переключить на темп, при котором ещё можно говорить, но уже не петь.",w:"UK Biobank, почти 475 тысяч человек: у быстро шагающих женщин ожидаемая продолжительность жизни 86,7–87,8 лет при любом весе; у медленных с низким весом — 72,4. Медленные вдвое чаще умирали от сердечных причин.",k:"Город проносится мимо, а ты приходишь раньше всех.",s:[["Zaccardi et al., Mayo Clinic Proceedings, 2019","https://figshare.le.ac.uk/articles/journal_contribution/Comparative_relevance_of_physical_fitness_and_adiposity_on_life_expectancy_A_UK_Biobank_observational_study/10239362"]]},
+{t:"Нерафинированное оливковое масло как главный жир",g:["Функциональность","Красота"],a:"Ложка-две extra virgin в салат, кашу, на хлеб — вместо майонеза и сливочных соусов.",w:"Рандомизированное испытание PREDIMED, 7447 человек: средиземноморская диета с ежедневным оливковым маслом снизила инфаркты, инсульты и сердечную смертность примерно на 30%.",k:"Горчинка и пряный запах — вкус отпуска на юге.",s:[["Estruch et al., NEJM, 2018","https://acc.org/latest-in-cardiology/articles/2018/06/13/16/05/mediterranean-diet-supplemented-with-extra-virgin-olive-oil-or-nuts-shows-lower-cv-risk"]]},
+{t:"Радуга на тарелке: 2 фрукта + 3 овоща",g:["Красота","Функциональность"],a:"Что-то цветное к каждому приёму; порция — около 80 г, примерно горсть.",w:"Две когорты и метаанализ 26 когорт: минимум смертности — около 5 порций в день, на 13% ниже, чем при 2. Больше 5 не добавляет; соки и картофель не считаются.",k:"Хруст и цвет — еда, которую хочется сфоткать.",s:[["Wang et al., Circulation, 2021","https://pmc.ncbi.nlm.nih.gov/articles/PMC8084888"]]},
+{t:"Еда, которую узнала бы бабушка",g:["Функциональность","Ощущения"],a:"Большая часть тарелки — продукты, которые выглядят как продукты: крупа, яйца, творог, овощи, мясо или рыба куском.",w:"Зонтичный обзор 45 метаанализов (почти 10 млн человек): много ультрапереработанной еды — 32 проблемы, в том числе риск смерти от сердца +50% и тревоги +48–53%.",k:"Сытость без тяжести через час.",s:[["Lane et al., BMJ, 2024","https://bmj.com/content/384/bmj-2023-077310"]]},
+{t:"Горсть орехов в день",g:["Функциональность","Красота"],a:"Около 30 г любых орехов или арахиса — в рюкзак вместо батончика.",w:"Около 119 тысяч человек, 30 лет: при ежедневных орехах смертность на 20% ниже, эффект растёт с частотой. В PREDIMED ежедневные 30 г орехов снизили сердечно-сосудистые события примерно на 30%.",k:"Хрустящий перекус, после которого не клонит в сон.",s:[["Bao et al., NEJM, 2013","https://pmc.ncbi.nlm.nih.gov/articles/PMC4121755"],["Estruch et al., NEJM, 2018","https://acc.org/latest-in-cardiology/articles/2018/06/13/16/05/mediterranean-diet-supplemented-with-extra-virgin-olive-oil-or-nuts-shows-lower-cv-risk"]]},
+{t:"Один маленький шаг к своему «зачем»",g:["Ощущения"],a:"Одно действие к тому, что для тебя смысл: строчка, идея в заметки, сообщение нужному человеку.",w:"Метаанализ 10 исследований (больше 136 тысяч человек, включая японское «икигай»): сильное чувство цели — смертность примерно на пятую часть ниже и меньше сердечно-сосудистых событий.",k:"Ощущение движения даже в серый день.",s:[["Cohen et al., Psychosomatic Medicine, 2016","https://www.midus.wisc.edu/findings/pdfs/2243.pdf"]]},
+{t:"Цельнозерновое вместо белого",g:["Функциональность"],a:"Овсянка, гречка, бурый рис, цельнозерновой хлеб, фасоль, чечевица — цель 25–29 г клетчатки в день.",w:"Обзор для ВОЗ — 185 когорт и 58 испытаний: при самой высокой клетчатке смертность от всех причин и от сердца ниже на 15–30%, меньше инсультов, диабета 2 типа и рака кишечника.",k:"Сытость на 4 часа вместо голода через час.",s:[["Reynolds et al., Lancet, 2019","https://www.otago.ac.nz/news/newsroom/11-january-2019-high-intake-of-dietary-fibre-and-whole-grain-foods-reduces-risk-of-non-communicable-diseases"]]},
+{t:"Шумоподавление вместо громкости",g:["Функциональность"],a:"В транспорте включить шумоподавление и убавить звук. Ориентир «60/60»: до 60% громкости и перерывы примерно раз в час.",w:"Lancet Commission 2024: потеря слуха — один из самых весомых изменяемых факторов риска деменции; 14 факторов вместе — до 45% случаев.",k:"Тишина в шумном вагоне — мини-отпуск для нервов.",s:[["Lancet Commission on dementia, 2024","https://thelancet.com/commissions/dementia-prevention-intervention-care"],["Mayo Clinic, правило 60/60","https://newsnetwork.mayoclinic.org/discussion/mayo-clinic-minute-the-60-60-rule-for-safer-listening"]]},
+{t:"Своя компания, с которой видишься регулярно",g:["Ощущения"],a:"Хотя бы одна постоянная группа — команда, клуб, друзья с традицией встреч.",w:"Тот же метаанализ 148 исследований: сильнее всего с выживаемостью связана сложная социальная вовлечённость — несколько ролей и связей сразу: шансы выше в 1,91 раза.",k:"Чувство «я своя» и шутки, понятные только вам.",s:[["Holt-Lunstad et al., PLoS Medicine, 2010","https://baycrest.echoontario.ca/?p=5393"]]},
+{t:"Сон не короче 7 часов",g:["Красота","Ощущения"],a:"Считать отбой от будильника: подъём в 6:00 — отбой не позже 23:00.",w:"Слишком короткий сон связан с ранней смертностью (UK Biobank); 7–9 часов — общепринятый ориентир для взрослых.",k:"Утро без тумана в голове.",s:[["Windred et al., Sleep, 2024","https://www.ukbiobank.ac.uk/publications/sleep-regularity-is-a-stronger-predictor-of-mortality-risk-than-sleep-duration-a-prospective-cohort-study/"]]}
+];
+const DONT=[
+{t:"Годами не знать своё давление",g:["Функциональность"],w:"Повышенное давление — у каждого третьего взрослого, и почти половина об этом не знает. Годами не болит, потом — инсульт, инфаркт, почки; ещё и фактор риска деменции.",a:"Раз в год измерить давление — у терапевта, в аптеке или домашним тонометром. Одна минута.",s:[["ВОЗ, глобальный доклад о гипертонии, 2023","https://www.who.int/en/news/item/19-09-2023-first-who-report-details-devastating-impact-of-hypertension-and-ways-to-stop-it"]]},
+{t:"Солить не пробуя",g:["Функциональность"],w:"Рандомизированное испытание почти на 21 тысяче человек: соль с пониженным натрием вместо обычной за 5 лет — инсультов на 14% меньше, крупных сердечных событий на 13%, смертности на 12%.",a:"Сначала пробовать, потом солить; дома — соль с пониженным натрием, лимон, зелень, специи. При болезнях почек калиевую соль — только после врача.",s:[["Neal et al., NEJM, 2021","https://www.medicalindependent.ie/2021/09/17/low-sodium-salt-prevents-stroke-new-study/"]]},
+{t:"Обгорать и ходить в солярий",g:["Красота"],w:"Солярии — группа 1 канцерогенов (МАИР, ВОЗ); начало до 30–35 лет — риск меланомы выше примерно на 75%. Плюс фотостарение кожи.",a:"Автозагар или бронзер — тот же цвет без ультрафиолета.",s:[["Environmental Health Perspectives, 2012","https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3440095/"]]},
+{t:"Сидеть часами подряд",g:["Функциональность"],w:"Долгое сидение повышает риск смерти; полностью его гасят только 60–75 минут умеренной активности в день.",a:"Минутные «взрывы», прогулка после еды, вставать каждые 30–60 минут.",s:[["Ekelund et al., Lancet, 2016","https://publications.mrc-epid.cam.ac.uk/publication/1100"]]},
+{t:"«Отсыпаться» до обеда в выходные",g:["Ощущения"],w:"Самый нерегулярный сон связан с самой высокой смертностью; регулярность важнее длительности. Для внутренних часов это как еженедельный перелёт через часовые пояса.",a:"Подъём в обычное окно ±1 час, недосып — ранним отбоем.",s:[["Windred et al., Sleep, 2024","https://www.ukbiobank.ac.uk/publications/sleep-regularity-is-a-stronger-predictor-of-mortality-risk-than-sleep-duration-a-prospective-cohort-study/"]]},
+{t:"Строить рацион на ультрапереработке",g:["Функциональность","Ощущения"],w:"Снеки в пачках, сладкие хлопья, газировка, «разогрей и ешь» с длинным составом: 32 неблагоприятных исхода, риск смерти от сердца +50%, тревоги +48–53%, диабета 2 типа +12%.",a:"Еда, которую узнала бы бабушка. Не запрет, а «не основа».",s:[["Lane et al., BMJ, 2024","https://bmj.com/content/384/bmj-2023-077310"]]},
+{t:"Сладкие напитки каждый день",g:["Функциональность"],w:"Около 118 тысяч человек, почти 30 лет: 1–2 в день — риск смерти +14%, 2 и больше — +21%, смерти от сердца +31%. Энергетики и кофе с сиропом — сюда же.",a:"Газированная вода с лимоном или огурцом.",s:[["Malik et al., Circulation, 2019","https://www.sci.news/medicine/sugar-sweetened-beverages-07031.html"]]},
+{t:"Колбаса, сосиски и бекон каждый день",g:["Функциональность"],w:"Переработанное мясо — группа 1 по колоректальному раку (МАИР, ВОЗ); каждые 50 г в день — риск +18%.",a:"Запечённая курица или индейка куском для бутербродов.",s:[["МАИР/ВОЗ, 2015","https://www.foodingredientsfirst.com/news/who-report-on-processed-meat-and-cancer-draws-rejection-from-industry.html"]]},
+{t:"Громкие наушники в дороге",g:["Функциональность"],w:"Потерянный слух не возвращается, а потеря слуха — один из главных изменяемых факторов риска деменции. 24% молодых людей слушают наушники небезопасно.",a:"Шумоподавление и правило 60/60.",s:[["Dillard et al., BMJ Global Health, 2022","https://gulfnews.com/world/billion-youth-risk-hearing-loss-from-headphones-venues-study-1.1668558894245"],["Lancet Commission, 2024","https://thelancet.com/commissions/dementia-prevention-intervention-care"]]},
+{t:"Клубы и концерты без берушей",g:["Функциональность"],w:"В таких местах обычно около 100 дБ — по данным ВОЗ, повредить слух можно уже за 15 минут.",a:"Музыкальные беруши — звук тише, но не глухой; передышки в тихой зоне.",s:[["ВОЗ, Make Listening Safe","https://www.eastidahonews.com/?p=130502"]]},
+{t:"Уходить в изоляцию «пока не добьюсь»",g:["Ощущения"],w:"Доклад главного санитарного врача США (2023): риск ранней смерти от разобщённости сравним с курением до 15 сигарет в день; у 15–24-летних время с друзьями вживую сократилось почти на 70%.",a:"Живой разговор в день и своя компания.",s:[["Surgeon General Advisory, 2023","https://www.ajc.com/pulse/surgeon-general-loneliness-is-an-epidemic-with-profound-health-risks/XYHV5Z6SABDRFCEG4VOBAGYOMM/"]]},
+{t:"Считать мышцы делом только красоты",g:["Функциональность"],w:"Без силовых ты отдаёшь даром 10–17% защиты от смерти, сердечных болезней, рака и диабета.",a:"30–60 минут силовых в неделю — уже в зоне эффекта.",s:[["Momma et al., BJSM, 2022","https://bjsm.bmj.com/content/56/13/755.abstract"]]},
+{t:"Режим «всё или ничего»",g:["Ощущения"],w:"У людей без тренировок даже 4,4 минуты интенсивной бытовой активности в день — риск смерти ниже на 26–30%. Мало — это уже много, ноль — это ноль.",a:"Минутные «взрывы» по ходу дня.",s:[["Stamatakis et al., Nature Medicine, 2022","https://www.ukbiobank.ac.uk/publications/association-of-wearable-device-measured-vigorous-intermittent-lifestyle-physical-activity-with-mortality/"]]},
+{t:"Белый хлеб, макароны и выпечка как основа",g:["Функциональность"],w:"Рафинированные злаки — это минус клетчатка: при самой низкой клетчатке теряется 15–30% защиты от смерти, инсульта, диабета 2 типа и рака кишечника.",a:"Цельнозерновое вместо белого.",s:[["Reynolds et al., Lancet, 2019","https://www.otago.ac.nz/news/newsroom/11-january-2019-high-intake-of-dietary-fibre-and-whole-grain-foods-reduces-risk-of-non-communicable-diseases"]]},
+{t:"Жить на автопилоте без своего «зачем»",g:["Ощущения"],w:"Слабое чувство смысла связано с более высокой смертностью и большим числом сердечно-сосудистых событий.",a:"Один маленький шаг к своему «зачем» в день.",s:[["Cohen et al., Psychosomatic Medicine, 2016","https://www.midus.wisc.edu/findings/pdfs/2243.pdf"]]},
+{t:"Годами щуриться и не проверять слух",g:["Функциональность"],w:"Нескорректированная потеря зрения с 2024 года — фактор риска деменции, потеря слуха — среди самых весомых, и риск растёт с каждой степенью потери.",a:"Окулист и проверка слуха раз в год-два — это одно утро.",s:[["Lancet Commission on dementia, 2024","https://thelancet.com/commissions/dementia-prevention-intervention-care"]]},
+{t:"Отдыхать только в экране",g:["Ощущения"],w:"Меньше 60 минут природы в неделю по здоровью и благополучию не отличалось от нуля.",a:"120 минут природы в неделю, кусками.",s:[["White et al., Scientific Reports, 2019","https://doi.org/10.1038/s41598-019-44097-3"]]},
+{t:"Поесть и сразу лечь или засесть",g:["Функциональность"],w:"Сидение после еды дало самый высокий сахар: ходьба снижала его на 17%, стояние — на 9,5%.",a:"2–5 минут ходьбы после еды.",s:[["Buffey et al., Sports Medicine, 2022","https://www.ksl.com/article/news/utah/health/just-2-minutes-of-walking-after-eating-can-help-blood-sugar-study-says/50468671"]]},
+{t:"Считать сок фруктом",g:["Функциональность"],w:"В отличие от целых фруктов и овощей, соки и картофель не были связаны с меньшей смертностью.",a:"Целый фрукт; хочется вкусно попить — вода с дольками фруктов.",s:[["Wang et al., Circulation, 2021","https://pmc.ncbi.nlm.nih.gov/articles/PMC8084888"]]},
+{t:"Сериальный марафон лёжа",g:["Функциональность"],w:"Время у экрана вреднее обычного сидения: даже 60–75 минут активности в день только снижали, но не убирали этот риск.",a:"Смотреть сидя на полу; после серии — 2 минуты движения.",s:[["Ekelund et al., Lancet, 2016","https://humanresources.illinois.edu/well-being-services/Newsletter-Articles/ResearchReport-Howmuchphysicalactivitycounteractssittingallday.pdf"]]},
+{t:"Самокат и велосипед без шлема",g:["Функциональность"],w:"Черепно-мозговая травма — один из 14 изменяемых факторов риска деменции.",a:"Шлем — единственный предмет в этой сводке, и он того стоит.",s:[["Lancet Commission on dementia, 2024","https://thelancet.com/commissions/dementia-prevention-intervention-care"]]}
+];
+
+let mode="do",filt="Все";
+const list=document.getElementById("list");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const srcHtml=s=>s.map(x=>'<a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>').join(" · ");
+
+function render(){
+  const data=mode==="do"?DO:DONT;
+  document.body.classList.toggle("bad-mode",mode!=="do");
+  document.getElementById("dice").style.display=mode==="do"?"block":"none";
+  if(mode!=="do")document.getElementById("pick").style.display="none";
+  list.innerHTML=data.map((it,i)=>{
+    if(filt!=="Все"&&!it.g.includes(filt))return"";
+    const parts=mode==="do"
+      ?'<p><span class="lab">Делать</span>'+esc(it.a)+'</p><p><span class="lab">Почему работает</span>'+esc(it.w)+'</p><p><span class="lab">Кайф сразу</span>'+esc(it.k)+'</p>'
+      :'<p><span class="lab">Чем бьёт</span>'+esc(it.w)+'</p><p><span class="lab">Замена</span>'+esc(it.a)+'</p>';
+    return '<details class="card"><summary><span class="num">'+String(i+1).padStart(2,"0")+'</span><span class="ttl">'+esc(it.t)+'<span class="tags">'+it.g.join(" · ")+'</span></span><span class="plus">+</span></summary><div class="body">'+parts+'<p class="src">'+srcHtml(it.s)+'</p></div></details>';
+  }).join("");
+}
+
+document.getElementById("bDo").onclick=function(){mode="do";this.className="on";document.getElementById("bDont").className="";render()};
+document.getElementById("bDont").onclick=function(){mode="dont";this.className="on bad";document.getElementById("bDo").className="";render()};
+document.querySelectorAll(".chip").forEach(c=>c.onclick=function(){
+  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
+  this.classList.add("on");filt=this.dataset.f;render();
+});
+document.getElementById("dice").onclick=function(){
+  const pool=DO.filter(x=>filt==="Все"||x.g.includes(filt));
+  const it=pool[Math.floor(Math.random()*pool.length)];
+  const p=document.getElementById("pick");
+  p.innerHTML='<b>'+esc(it.t)+'</b><br>'+esc(it.a)+'<br><br><b>Кайф:</b> '+esc(it.k);
+  p.style.display="block";
+};
+
+const seen={},all=[];
+DO.concat(DONT).forEach(it=>it.s.forEach(x=>{if(!seen[x[1]]){seen[x[1]]=1;all.push(x)}}));
+document.getElementById("srcList").innerHTML=all.map(x=>'<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>').join("");
+
+render();
+</script>
+</body>
+</html>
